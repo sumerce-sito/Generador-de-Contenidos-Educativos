@@ -14,8 +14,7 @@ class GeneradorContenidoEducativo:
         """Inicializa el generador con la API de Gemini"""
         if api_key:
             self.client = genai.Client(api_key=api_key)
-        self.model_id = 'gemini-1.5-pro'
-
+        self.model_id = 'gemini-1.5-flash'
 
         
     def generar_contenido(self, tema: str, grado: str) -> str:
@@ -101,10 +100,20 @@ Educational illustration showing {tema} in Colombian context. Include specific C
 CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (sin introducción como "Aquí está...")"""
 
         try:
-            response = self.client.models.generate_content(
-                model=self.model_id,
-                contents=prompt
-            )
+            # Intentar generar con el modelo principal
+            try:
+                response = self.client.models.generate_content(
+                    model=self.model_id,
+                    contents=prompt
+                )
+            except Exception as e:
+                # Fallback a gemini-2.0-flash-exp si falla
+                print(f"[DEBUG] Error con {self.model_id}: {e}. Intentando fallback...")
+                response = self.client.models.generate_content(
+                    model='gemini-2.0-flash',
+                    contents=prompt
+                )
+                
             contenido = response.text
 
             
