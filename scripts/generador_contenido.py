@@ -99,20 +99,39 @@ Educational illustration showing {tema} in Colombian context. Include specific C
 
 CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (sin introducción como "Aquí está...")"""
 
+        import time
+
         try:
+            # Función auxiliar para intentar generar con retries
+            def intentar_generar(modelo, intentos=3):
+                for i in range(intentos):
+                    try:
+                        print(f"[DEBUG] Intentando con modelo {modelo} (Intento {i+1}/{intentos})...")
+                        return self.client.models.generate_content(
+                            model=modelo,
+                            contents=prompt
+                        )
+                    except Exception as e:
+                        error_str = str(e)
+                        if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
+                            if i < intentos - 1:
+                                wait_time = 10 * (i + 1)
+                                print(f"[DEBUG] Cuota excedida. Esperando {wait_time}s para reintentar...")
+                                time.sleep(wait_time)
+                                continue
+                        raise e
+
             # Intentar generar con el modelo principal
             try:
-                response = self.client.models.generate_content(
-                    model=self.model_id,
-                    contents=prompt
-                )
-            except Exception as e:
-                # Fallback a gemini-2.0-flash-exp si falla
-                print(f"[DEBUG] Error con {self.model_id}: {e}. Intentando fallback...")
-                response = self.client.models.generate_content(
-                    model='gemini-2.0-flash',
-                    contents=prompt
-                )
+                response = intentar_generar(self.model_id)
+            except Exception as e1:
+                print(f"[DEBUG] Falló modelo principal {self.model_id}: {e1}")
+                # Fallback a gemini-2.0-flash si falla
+                try:
+                    print(f"[DEBUG] Intentando fallback con gemini-2.0-flash...")
+                    response = intentar_generar('gemini-2.0-flash')
+                except Exception as e2:
+                    return f"Error: Límite de cuota excedido o modelo no disponible. Por favor espera 1 minuto e intenta de nuevo. Detalle: {e2}"
                 
             contenido = response.text
 
