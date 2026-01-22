@@ -1,307 +1,180 @@
-<<<<<<< HEAD
-# 📚 APP COLEGIOS 2026 - Generador de Contenidos Educativos DBA
+# 🎓 Generador de Contenidos Educativos Colombia
 
-Sistema automatizado para la creación de contenidos educativos alineados con los **Derechos Básicos de Aprendizaje (DBA)** de Colombia.
+Sistema de diseño instruccional automatizado para crear contenido educativo de alta calidad alineado con los **Derechos Básicos de Aprendizaje (DBA)** de Colombia.
 
-## 📁 Estructura del Proyecto
+## ✨ Características
 
-```
-APP COLEGIOS 2026/
-├── contenidos/          # Contenidos educativos base y referencias DBA
-├── templates/           # Plantillas y ejemplos de contenido
-├── output/              # Contenido generado (por tema y grado)
-├── recursos/            # Recursos adicionales (imágenes, documentos)
-├── scripts/             # Scripts de generación
-│   └── generador_contenido.py
-└── README.md
-```
+- 📚 **Contenido Denso y Detallado**: Genera teoría profunda con fundamentos científicos y ejemplos colombianos específicos
+- 🗺️ **Contextualizado para Colombia**: Incluye ejemplos de todas las regiones (Caribe, Pacífico, Andina, Amazonía, Orinoquía)
+- 📊 **Diagramas Mermaid**: Genera automáticamente mapas conceptuales y diagramas de flujo
+- 🎨 **Prompts DALL-E**: Crea prompts optimizados para generar imágenes educativas
+- ✏️ **Actividades Prácticas**: Talleres con materiales de fácil acceso en Colombia
+- 📝 **Evaluaciones**: Taller evaluativo con clave de respuestas incluida
+- 🎯 **Alineado con DBA**: Todo el contenido sigue los estándares oficiales del Ministerio de Educación
+- 🖥️ **Interfaz Web Moderna**: Diseño inspirado en UNOi con estilo profesional
 
-## 🎯 Características
+## 🚀 Instalación
 
-- ✅ Generación automática de contenido educativo
-- ✅ Alineado con DBA Colombia
-- ✅ Contexto y ejemplos colombianos (regiones, cultura)
-- ✅ Diagramas Mermaid.js integrados
-- ✅ Prompts para generación de imágenes educativas (DALL-E)
-- ✅ Talleres evaluativos con claves de respuesta
-- ✅ Estructura milimétrica para procesamiento automatizado
-
-## 🚀 Uso Rápido
-
-### Instalación
-
-```bash
-cd "d:\APP COLEGIOS 2026"
-pip install google-generativeai
-```
-
-### Ejecución
-
-```bash
-cd scripts
-python generador_contenido.py
-```
-
-### Uso Programático
-
-```python
-from scripts.generador_contenido import GeneradorContenidoEducativo
-
-# Inicializar
-generador = GeneradorContenidoEducativo(api_key="TU_API_KEY")
-
-# Generar contenido
-contenido = generador.generar_contenido(
-    tema="El ciclo del agua",
-    grado="4°"
-)
-
-# Parsear y guardar
-secciones = generador.parsear_contenido(contenido)
-generador.guardar_contenido(secciones, "El ciclo del agua", "4°")
-```
-
-## 📋 Secciones Generadas
-
-Cada contenido incluye:
-
-### 1. **THEORIA**
-- Pregunta orientadora (contexto colombiano)
-- Desarrollo profundo con 3 subtítulos
-- Conceptos en negrilla
-- 3 ejemplos locales de Colombia
-- Citación del DBA correspondiente
-
-### 2. **VISUALIZACION**
-- Código Mermaid.js (mapa conceptual/diagrama de flujo)
-- Prompt para DALL-E 3 (ilustración educativa)
-
-### 3. **ACTIVIDADES**
-- Nombre de la actividad
-- Objetivos de aprendizaje
-- Materiales de fácil acceso en Colombia
-- Instrucciones paso a paso
-- Taller evaluativo (5-7 preguntas)
-- Clave de respuestas
-
-### 4. **METADATOS**
-- Título de la unidad
-- Grado sugerido
-- Eje temático
-- Fecha de creación
-
-## 📂 Salida de Archivos
-
-Para cada tema generado se crea una carpeta con:
-
-```
-output/
-└── 4°_El_ciclo_del_agua/
-    ├── contenido_completo.txt  # Todo el contenido
-    ├── teoria.md               # Sección teórica
-    ├── actividades.md          # Actividades y taller
-    ├── metadatos.txt           # Información metadata
-    ├── diagrama.mmd            # Código Mermaid
-    └── prompt_dalle.txt        # Prompt para imagen
-```
-
-## 🔧 Requisitos
-
+### Requisitos
 - Python 3.8+
-- `google-generativeai` (Gemini API)
-- API Key de Google Gemini
+- API Key de Google Gemini ([obtener aquí](https://makersuite.google.com/app/apikey))
 
-## 📖 Ejemplos de Temas
+### Pasos
 
-- Ciencias Naturales: "El ciclo del agua", "La fotosíntesis", "El sistema solar"
-- Matemáticas: "Fracciones", "Geometría básica", "Operaciones con decimales"
-- Sociales: "Regiones de Colombia", "Cultura indígena", "Geografía colombiana"
-- Lenguaje: "La narración", "Comprensión lectora", "Gramática española"
-
-## ⚙️ Configuración API
-
-1. Obtén tu API Key de Google AI Studio: https://makersuite.google.com/app/apikey
-2. Al ejecutar el script, ingresa tu API Key cuando se solicite
-3. O configúrala en tu código:
-
-```python
-generador = GeneradorContenidoEducativo(api_key="tu-api-key-aquí")
+1. **Clonar el repositorio**
+```bash
+git clone https://github.com/sumerce-sito/Generador-de-Contenidos-Educativos.git
+cd Generador-de-Contenidos-Educativos
 ```
 
-## 🎨 Visualizaciones
+2. **Instalar dependencias**
+```bash
+pip install -r requirements.txt
+```
 
-- Los archivos `.mmd` pueden visualizarse en: https://mermaid.live
-- Los prompts DALL-E pueden usarse en OpenAI o Microsoft Designer
+3. **Ejecutar la aplicación**
+```bash
+streamlit run app.py
+```
 
-## 📝 Notas Importantes
+La aplicación se abrirá en `http://localhost:8501`
 
-- La estructura de salida es **milimétrica** para permitir parsing automatizado
-- Todo el contenido se alinea con los DBA de Colombia
-- Los ejemplos y contextos son específicos de Colombia (regiones, cultura, geografía)
-- Los materiales sugeridos son de fácil acceso en contexto colombiano
+## 📖 Uso
 
-## 🤝 Contribuir
+### Interfaz Web (Recomendado)
 
-Este es un proyecto para mejorar la educación en Colombia. Si tienes sugerencias o mejoras, son bienvenidas.
+1. **Configurar API Key**
+   - Ingresa tu API Key de Google Gemini en la barra lateral
 
-## 📜 Licencia
+2. **Ingresar Datos**
+   - **Tema**: Escribe el tema educativo (ej: "El ciclo del agua")
+   - **Grado**: Selecciona el grado escolar (1° a 11°)
 
-Proyecto educativo para instituciones colombianas.
+3. **Generar Contenido**
+   - Haz clic en "🚀 Generar Contenido Educativo"
+   - Espera 20-60 segundos mientras la IA genera el contenido
+
+4. **Ver y Descargar**
+   - Revisa el contenido en la pestaña "📖 Contenido Generado"
+   - Descarga los archivos individuales que necesites
+
+### Modo Demo
+
+Haz clic en "🎭 Ver Contenido de Demostración" para explorar un ejemplo completo sin necesidad de API Key.
+
+### Línea de Comandos
+
+```bash
+python scripts/generador_contenido.py
+```
+
+## 📦 Contenido Generado
+
+Cada tema genera automáticamente:
+
+- **`teoria.md`**: Contenido teórico denso (1000-2000 palabras) con:
+  - Introducción contextualizada
+  - 4-6 conceptos principales
+  - Fundamentos científicos
+  - 3-4 ejemplos por región colombiana
+  - Datos estadísticos de Colombia
+  - DBA citado y competencias
+
+- **`diagrama.mmd`**: Código Mermaid para visualización
+
+- **`prompt_dalle.txt`**: Prompt optimizado para generación de imágenes
+
+- **`actividades.md`**: Taller práctico con:
+  - Materiales de fácil acceso
+  - Instrucciones paso a paso
+  - Preguntas evaluativas
+  - Clave de respuestas
+
+- **`metadatos.txt`**: Información clasificatoria del contenido
+
+- **`contenido_completo.txt`**: Todas las secciones juntas
+
+## 🎨 Estructura del Proyecto
+
+```
+Generador-de-Contenidos-Educativos/
+├── app.py                          # Interfaz web Streamlit
+├── scripts/
+│   └── generador_contenido.py     # Lógica de generación
+├── templates/
+│   └── ejemplo_output.txt         # Ejemplo de salida
+├── recursos/
+│   └── hero_image.png             # Imagen hero de la interfaz
+├── output/                        # Contenidos generados
+├── requirements.txt               # Dependencias Python
+├── INICIO_RAPIDO.md              # Guía rápida
+└── README.md                      # Este archivo
+```
+
+## 🌟 Ejemplos de Temas
+
+### Ciencias Naturales
+- El ciclo del agua
+- La fotosíntesis
+- Ecosistemas colombianos
+- El sistema solar
+- Estados de la materia
+
+### Matemáticas
+- Fracciones
+- Geometría básica
+- Álgebra elemental
+- Probabilidad
+
+### Ciencias Sociales
+- Regiones de Colombia
+- Geografía colombiana
+- Historia de Colombia
+- Constitución política
+
+## 💡 Características de la Interfaz
+
+- **Diseño UNOi-inspired**: Interfaz moderna con color verde esmeralda (#00a884)
+- **Sidebar negra**: Configuración y ejemplos de temas
+- **Cards limpias**: Contenedores blancos con sombras sutiles
+- **Tabs organizadas**: Navegación clara entre secciones
+- **Responsive**: Se adapta a diferentes tamaños de pantalla
+- **Badges informativos**: Muestra características del contenido generado
+
+## 🔧 Tecnologías
+
+- **Backend**: Python 3.8+
+- **IA**: Google Gemini 1.5 Pro
+- **Interfaz**: Streamlit
+- **Visualización**: Mermaid.js
+- **Tipografía**: Montserrat (Google Fonts)
+
+## 📝 Licencia
+
+Este proyecto está desarrollado para apoyar la educación colombiana.
+
+## 🤝 Contribuciones
+
+Las contribuciones son bienvenidas. Por favor:
+
+1. Fork el repositorio
+2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
+3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
+4. Push a la rama (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
+
+## 👨‍💻 Autor
+
+**Sumercesito**
+
+Desarrollado con ❤️ para la educación colombiana 🇨🇴
+
+## 🙏 Agradecimientos
+
+- Ministerio de Educación de Colombia por los DBA
+- Google Gemini por la API de IA
+- Comunidad educativa colombiana
 
 ---
 
-**Desarrollado con ❤️ para la educación colombiana**
-=======
-# 📚 APP COLEGIOS 2026 - Generador de Contenidos Educativos DBA
-
-Sistema automatizado para la creación de contenidos educativos alineados con los **Derechos Básicos de Aprendizaje (DBA)** de Colombia.
-
-## 📁 Estructura del Proyecto
-
-```
-APP COLEGIOS 2026/
-├── contenidos/          # Contenidos educativos base y referencias DBA
-├── templates/           # Plantillas y ejemplos de contenido
-├── output/              # Contenido generado (por tema y grado)
-├── recursos/            # Recursos adicionales (imágenes, documentos)
-├── scripts/             # Scripts de generación
-│   └── generador_contenido.py
-└── README.md
-```
-
-## 🎯 Características
-
-- ✅ Generación automática de contenido educativo
-- ✅ Alineado con DBA Colombia
-- ✅ Contexto y ejemplos colombianos (regiones, cultura)
-- ✅ Diagramas Mermaid.js integrados
-- ✅ Prompts para generación de imágenes educativas (DALL-E)
-- ✅ Talleres evaluativos con claves de respuesta
-- ✅ Estructura milimétrica para procesamiento automatizado
-
-## 🚀 Uso Rápido
-
-### Instalación
-
-```bash
-cd "d:\APP COLEGIOS 2026"
-pip install google-generativeai
-```
-
-### Ejecución
-
-```bash
-cd scripts
-python generador_contenido.py
-```
-
-### Uso Programático
-
-```python
-from scripts.generador_contenido import GeneradorContenidoEducativo
-
-# Inicializar
-generador = GeneradorContenidoEducativo(api_key="TU_API_KEY")
-
-# Generar contenido
-contenido = generador.generar_contenido(
-    tema="El ciclo del agua",
-    grado="4°"
-)
-
-# Parsear y guardar
-secciones = generador.parsear_contenido(contenido)
-generador.guardar_contenido(secciones, "El ciclo del agua", "4°")
-```
-
-## 📋 Secciones Generadas
-
-Cada contenido incluye:
-
-### 1. **THEORIA**
-- Pregunta orientadora (contexto colombiano)
-- Desarrollo profundo con 3 subtítulos
-- Conceptos en negrilla
-- 3 ejemplos locales de Colombia
-- Citación del DBA correspondiente
-
-### 2. **VISUALIZACION**
-- Código Mermaid.js (mapa conceptual/diagrama de flujo)
-- Prompt para DALL-E 3 (ilustración educativa)
-
-### 3. **ACTIVIDADES**
-- Nombre de la actividad
-- Objetivos de aprendizaje
-- Materiales de fácil acceso en Colombia
-- Instrucciones paso a paso
-- Taller evaluativo (5-7 preguntas)
-- Clave de respuestas
-
-### 4. **METADATOS**
-- Título de la unidad
-- Grado sugerido
-- Eje temático
-- Fecha de creación
-
-## 📂 Salida de Archivos
-
-Para cada tema generado se crea una carpeta con:
-
-```
-output/
-└── 4°_El_ciclo_del_agua/
-    ├── contenido_completo.txt  # Todo el contenido
-    ├── teoria.md               # Sección teórica
-    ├── actividades.md          # Actividades y taller
-    ├── metadatos.txt           # Información metadata
-    ├── diagrama.mmd            # Código Mermaid
-    └── prompt_dalle.txt        # Prompt para imagen
-```
-
-## 🔧 Requisitos
-
-- Python 3.8+
-- `google-generativeai` (Gemini API)
-- API Key de Google Gemini
-
-## 📖 Ejemplos de Temas
-
-- Ciencias Naturales: "El ciclo del agua", "La fotosíntesis", "El sistema solar"
-- Matemáticas: "Fracciones", "Geometría básica", "Operaciones con decimales"
-- Sociales: "Regiones de Colombia", "Cultura indígena", "Geografía colombiana"
-- Lenguaje: "La narración", "Comprensión lectora", "Gramática española"
-
-## ⚙️ Configuración API
-
-1. Obtén tu API Key de Google AI Studio: https://makersuite.google.com/app/apikey
-2. Al ejecutar el script, ingresa tu API Key cuando se solicite
-3. O configúrala en tu código:
-
-```python
-generador = GeneradorContenidoEducativo(api_key="tu-api-key-aquí")
-```
-
-## 🎨 Visualizaciones
-
-- Los archivos `.mmd` pueden visualizarse en: https://mermaid.live
-- Los prompts DALL-E pueden usarse en OpenAI o Microsoft Designer
-
-## 📝 Notas Importantes
-
-- La estructura de salida es **milimétrica** para permitir parsing automatizado
-- Todo el contenido se alinea con los DBA de Colombia
-- Los ejemplos y contextos son específicos de Colombia (regiones, cultura, geografía)
-- Los materiales sugeridos son de fácil acceso en contexto colombiano
-
-## 🤝 Contribuir
-
-Este es un proyecto para mejorar la educación en Colombia. Si tienes sugerencias o mejoras, son bienvenidas.
-
-## 📜 Licencia
-
-Proyecto educativo para instituciones colombianas.
-
----
-
-**Desarrollado con ❤️ para la educación colombiana**
->>>>>>> 24932c8dc575b650947bc865aaf3c48ec7b4901f
+**Sumercesito | Alineado con DBA Colombia**
