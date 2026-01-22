@@ -1,0 +1,155 @@
+###SECTION_START: THEORIA###
+
+**¿Cómo influye el ciclo del agua en la vida de las regiones colombianas?**
+
+## 1. El Ciclo del Agua: Un Viaje Constante
+
+El **ciclo del agua** o **ciclo hidrológico** es el proceso continuo de circulación del agua en la Tierra. Este ciclo incluye procesos como la **evaporación**, **condensación**, **precipitación** y **escorrentía**. El agua se mueve constantemente entre los océanos, la atmósfera y la tierra, cambiando de estado (líquido, gas, sólido) en su recorrido.
+
+## 2. Etapas del Ciclo del Agua
+
+- **Evaporación**: El calor del sol convierte el agua líquida de ríos, lagos y océanos en **vapor de agua**
+- **Transpiración**: Las plantas liberan vapor de agua a través de sus hojas
+- **Condensación**: El vapor de agua se enfría y forma **nubes** en la atmósfera
+- **Precipitación**: El agua cae a la tierra en forma de lluvia, nieve o granizo
+- **Infiltración y Escorrentía**: El agua penetra el suelo o fluye por la superficie hacia ríos y mares
+
+## 3. Importancia para Colombia
+
+El ciclo del agua determina la **biodiversidad** y **productividad** de nuestras regiones. Colombia es uno de los países con mayor riqueza hídrica del mundo.
+
+### Ejemplos Colombianos:
+
+1. **Región Pacífica (Chocó)**: Una de las zonas más lluviosas del planeta. La alta precipitación alimenta selvas tropicales y ríos caudalosos como el Atrato.
+
+2. **Páramos Andinos (Boyacá, Cundinamarca)**: Los páramos capturan agua de la niebla y lluvia, actuando como "esponjas naturales" que abastecen acueductos de ciudades como Bogotá.
+
+3. **Amazonía Colombiana**: La evapotranspiración de la selva genera "ríos voladores" que transportan humedad y favorecen las lluvias en toda Sudamérica.
+
+**DBA Correspondiente**: DBA 4 - Ciencias Naturales 4°: "Comprende que existe una gran diversidad de materiales y que éstos se utilizan para distintos fines, según sus características (longitud, dureza, flexibilidad, permeabilidad al agua, solubilidad, ductilidad, maleabilidad, color, sabor, textura)."
+
+###SECTION_END###
+
+###SECTION_START: VISUALIZACION###
+---CODIGO_MERMAID_START---
+graph TD
+    A[Sol ☀️] --> B[Evaporación de océanos y ríos]
+    B --> C[Vapor de agua sube]
+    C --> D[Condensación - Formación de nubes]
+    D --> E[Precipitación - Lluvia/Nieve]
+    E --> F[Agua cae a la tierra]
+    F --> G[Infiltración al suelo]
+    F --> H[Escorrentía a ríos]
+    G --> I[Agua subterránea]
+    H --> J[Ríos y lagos]
+    I --> J
+    J --> B
+    
+    style A fill:#FFD700
+    style D fill:#87CEEB
+    style E fill:#4682B4
+    style J fill:#1E90FF
+---CODIGO_MERMAID_END---
+
+---PROMPT_DALLE_START---
+Educational vector illustration of the water cycle showing evaporation from ocean, condensation forming clouds, precipitation as rain, and water flowing back to ocean. Include labels in Spanish (Evaporación, Condensación, Precipitación, Escorrentía). Style: clean, colorful, suitable for elementary students, 4k quality, white background, cartoon style with rounded shapes and friendly colors.
+---PROMPT_DALLE_END---
+###SECTION_END###
+
+###SECTION_START: ACTIVIDADES###
+
+## Actividad: "Observadores del Agua en Mi Región"
+
+### Objetivos:
+- Identificar las etapas del ciclo del agua en el entorno cercano
+- Relacionar el ciclo del agua con fenómenos cotidianos
+- Desarrollar habilidades de observación científica
+
+### Materiales:
+- Cuaderno de notas
+- Lápices de colores
+- Frasco de vidrio transparente
+- Agua
+- Plástico transparente (bolsa)
+- Liga o cuerda
+- Opcional: termómetro
+
+### Instrucciones Paso a Paso:
+
+**Día 1: Experimento "Mini Ciclo del Agua"**
+1. Llena el frasco de vidrio hasta la mitad con agua
+2. Cubre la boca del frasco con el plástico transparente
+3. Asegura con la liga
+4. Coloca el frasco en un lugar donde le dé el sol
+5. Observa qué sucede después de 2-3 horas
+6. Dibuja y describe lo que ves
+
+**Día 2-7: Diario de Observación**
+1. Durante una semana, observa y registra:
+   - ¿Hay nubes en el cielo? ¿De qué tipo?
+   - ¿Llovió? ¿A qué hora?
+   - ¿Hay charcos? ¿Desaparecen? ¿Cuándo?
+   - ¿Hay rocío en las plantas por la mañana?
+2. Dibuja tus observaciones diarias
+
+**Día 8: Presentación**
+1. Comparte tus observaciones con la clase
+2. Relaciona lo que viste con las etapas del ciclo del agua
+
+### Taller Evaluativo:
+
+**1.** ¿Qué es el ciclo del agua?
+   a) El agua que tomamos en casa
+   b) El proceso continuo de movimiento del agua en la Tierra
+   c) El agua de los ríos
+   d) La lluvia
+
+**2.** ¿Cuál es el nombre del proceso cuando el agua líquida se convierte en vapor?
+   a) Condensación
+   b) Precipitación
+   c) Evaporación
+   d) Infiltración
+
+**3.** ¿Qué papel juegan las nubes en el ciclo del agua?
+   a) Almacenan vapor de agua condensado
+   b) Producen oxígeno
+   c) Bloquean el sol
+   d) No tienen función
+
+**4.** En la región del Chocó llueve mucho. ¿Qué etapa del ciclo del agua es la lluvia?
+   a) Evaporación
+   b) Condensación
+   c) Precipitación
+   d) Transpiración
+
+**5.** ¿Por qué los páramos son importantes para el agua de Bogotá?
+   a) Porque tienen mucha nieve
+   b) Porque capturan y almacenan agua como esponjas naturales
+   c) Porque no llueve allí
+   d) Porque están cerca del mar
+
+**6.** Cuando ves que una charco desaparece después de la lluvia, ¿qué procesos están ocurriendo?
+   a) Solo evaporación
+   b) Solo infiltración
+   c) Evaporación e infiltración
+   d) Ninguno
+
+**7.** Dibuja y etiqueta las 4 etapas principales del ciclo del agua. (Pregunta abierta)
+
+### Clave de Respuestas:
+1. b
+2. c
+3. a
+4. c
+5. b
+6. c
+7. Dibujo debe incluir: Evaporación → Condensación → Precipitación → Escorrentía/Infiltración
+
+###SECTION_END###
+
+###SECTION_START: METADATOS###
+**Título de la Unidad:** El Ciclo del Agua en Colombia
+**Grado Sugerido:** 4° Primaria
+**Eje Temático:** Ciencias Naturales - Entorno Físico
+**Fecha:** 21 de enero de 2026
+###SECTION_END###
