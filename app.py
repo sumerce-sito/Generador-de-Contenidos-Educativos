@@ -488,7 +488,23 @@ with tab1:
                     
                     # Parsear
                     secciones = st.session_state.generador.parsear_contenido(contenido)
-                    st.session_state.secciones = secciones
+                    
+                    # Verificar si el parseo falló
+                    if secciones.get('THEORIA', '').startswith('Error'):
+                        # Fallback: Mostrar el contenido crudo completo
+                        st.warning("⚠️ El contenido fue generado pero en formato diferente. Mostrando contenido completo sin dividir en secciones.")
+                        
+                        # Crear secciones con el contenido completo
+                        st.session_state.secciones = {
+                            'THEORIA': contenido,  # Todo el contenido
+                            'MERMAID': 'No se pudo extraer automáticamente',
+                            'DALLE_PROMPT': 'No se pudo extraer automáticamente', 
+                            'ACTIVIDADES': 'Ver contenido completo en la pestaña Teoría',
+                            'METADATOS': f"**Tema:** {tema}\n**Grado:** {grado}\n**Generado:** {datetime.now().strftime('%Y-%m-%d')}"
+                        }
+                    else:
+                        # Parseo exitoso
+                        st.session_state.secciones = secciones
                     
                     # Guardar
                     carpeta = st.session_state.generador.guardar_contenido(secciones, tema, grado, output_dir="output")
