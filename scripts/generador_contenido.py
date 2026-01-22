@@ -28,39 +28,81 @@ class GeneradorContenidoEducativo:
             str: Contenido formateado con delimitadores exactos
         """
         
-        prompt = f"""Genera contenido educativo sobre "{tema}" para grado {grado}.
-
-FORMATO OBLIGATORIO - Copia exactamente esta estructura:
+        prompt = f"""Genera contenido educativo sobre "{tema}" para grado {grado} siguiendo EXACTAMENTE este formato:
 
 ###SECTION_START: THEORIA###
-[Escribe aquí contenido teórico denso de 1000+ palabras con: introducción contextualizando Colombia (2 párrafos), 4-5 secciones numeradas sobre {tema} (cada una con: definición, fundamento científico, 3+ ejemplos colombianos específicos con ubicaciones y datos cuantitativos), cierre sobre importancia para Colombia, DBA citado y competencias]
+Escribe contenido teórico detallado (mínimo 800 palabras) sobre {tema}. Incluye:
+- Introducción de 2 párrafos contextualizando para Colombia
+- 4-5 conceptos principales numerados (### 1. Título, ### 2. Título, etc.)
+- Para cada concepto: definición, fundamento científico, y 3+ ejemplos colombianos con ubicaciones específicas
+- Cierre sobre la importancia para Colombia
+- DBA citado entre comillas y lista de competencias desarrolladas
 ###SECTION_END###
 
 ###SECTION_START: VISUALIZACION###
 ---CODIGO_MERMAID_START---
-[Código Mermaid.js válido tipo "graph TD" con 10-15 nodos sobre {tema}, con emojis y etiquetas en español]
+graph TD
+    A[Inicio] --> B[Paso 2]
+    B --> C[Paso 3]
+    (Genera aquí un diagrama Mermaid válido tipo "graph TD" con 10-15 nodos sobre {tema}, usando emojis y etiquetas en español)
 ---CODIGO_MERMAID_END---
 
 ---PROMPT_DALLE_START---
-[Prompt en inglés de 100-150 palabras para DALL-E 3 describiendo ilustración educativa de {tema} con elementos colombianos, estilo "Educational illustration, vibrant colors, Colombian context, 4k quality"]
+Educational illustration showing {tema} in Colombian context. Include specific Colombian landscapes, vibrant colors, child-friendly style, 4k quality.
+(Genera aquí un prompt en inglés de 100-150 palabras para DALL-E 3)
 ---PROMPT_DALLE_END---
 ###SECTION_END###
 
 ###SECTION_START: ACTIVIDADES###
-[Escribe: "## 🎨 [nombre actividad]", "**Objetivo:**" [objetivo], "### Materiales:" lista de 5 materiales fáciles en Colombia, "### Instrucciones:" 6 pasos numerados, "### 📝 Taller Evaluativo" con 6 preguntas variadas, "### ✅ Clave:" 6 respuestas]
+## 🎨 [Nombre creativo de la actividad sobre {tema}]
+
+**Objetivo:** [Objetivo claro de aprendizaje]
+
+### Materiales:
+- Material 1
+- Material 2
+- Material 3
+- Material 4
+- Material 5
+
+### Instrucciones:
+1. Paso 1
+2. Paso 2
+3. Paso 3
+4. Paso 4
+5. Paso 5
+6. Paso 6
+
+### 📝 Taller Evaluativo
+1. Pregunta 1
+2. Pregunta 2
+3. Pregunta 3
+4. Pregunta 4
+5. Pregunta 5
+
+### ✅ Clave de Respuestas:
+1. Respuesta 1
+2. Respuesta 2
+3. Respuesta 3
+4. Respuesta 4
+5. Respuesta 5
 ###SECTION_END###
 
 ###SECTION_START: METADATOS###
-[Escribe: "**Título:**" [título], "**Grado:** {grado}", "**Área:**" [área], "**Fecha:** {datetime.now().strftime("%Y-%m-%d")}", "**Palabras clave:**" [5 keywords]]
+**Título:** [Título sobre {tema}]
+**Grado:** {grado}
+**Área:** [Ciencias/Matemáticas/Sociales]
+**Fecha:** {datetime.now().strftime("%Y-%m-%d")}
+**Palabras clave:** [keyword1, keyword2, keyword3, keyword4, keyword5]
 ###SECTION_END###
 
-IMPORTANTE: NO escribas "Aquí tienes...", solo empieza directamente con ###SECTION_START: THEORIA###"""
+CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (sin introducción como "Aquí está...")"""
 
         try:
             response = self.model.generate_content(prompt)
             contenido = response.text
             
-            # Debug
+            # Debug - guardar contenido raw
             try:
                 debug_path = os.path.join(os.path.dirname(__file__), "..", "debug_raw.txt")
                 with open(debug_path, "w", encoding="utf-8") as f:
@@ -102,9 +144,11 @@ IMPORTANTE: NO escribas "Aquí tienes...", solo empieza directamente con ###SECT
                 secciones[seccion] = f"Error: Sección {seccion} no encontrada"
                 print(f"[DEBUG] No se encontró la sección {seccion}")
                 print(f"[DEBUG] Buscando: '{inicio}'")
+                # Mostrar primeras 500 caracteres del contenido para debug
+                print(f"[DEBUG] Primeros 500 chars:\n{contenido[:500]}")
         
         # Parsear subsecciones de VISUALIZACION
-        if 'VISUALIZACION' in secciones:
+        if 'VISUALIZACION' in secciones and not secciones['VISUALIZACION'].startswith('Error'):
             vis_content = secciones['VISUALIZACION']
             
             # Extraer código Mermaid
