@@ -7,6 +7,7 @@ import os
 from datetime import datetime
 from typing import Dict
 from openai import OpenAI
+from huggingface_hub import InferenceClient
 
 
 class GeneradorContenidoEducativo:
@@ -14,11 +15,18 @@ class GeneradorContenidoEducativo:
         self,
         api_key: str = None,
         model_id: str = 'deepseek-chat',
-        base_url: str = 'https://api.deepseek.com'
+        base_url: str = 'https://api.deepseek.com',
+        provider: str = 'deepseek'
     ):
-        """Inicializa el generador con la API de DeepSeek"""
+        """Inicializa el generador con la API seleccionada"""
+        self.provider = provider
         if api_key:
-            self.client = OpenAI(api_key=api_key, base_url=base_url)
+            if provider == 'deepseek':
+                self.client = OpenAI(api_key=api_key, base_url=base_url)
+            elif provider == 'huggingface':
+                self.client = InferenceClient(model=model_id, token=api_key)
+            else:
+                raise ValueError(f"Proveedor no soportado: {provider}")
         self.model_id = model_id
 
         
@@ -123,12 +131,22 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                         try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
                         except: pass
                         
-                        return self.client.chat.completions.create(
-                            model=modelo,
-                            messages=[
-                                {"role": "user", "content": prompt}
-                            ]
-                        )
+                        if self.provider == 'deepseek':
+                            return self.client.chat.completions.create(
+                                model=modelo,
+                                messages=[
+                                    {"role": "user", "content": prompt}
+                                ]
+                            )
+                        if self.provider == 'huggingface':
+                            return self.client.text_generation(
+                                prompt,
+                                max_new_tokens=2048,
+                                do_sample=True,
+                                temperature=0.7,
+                                return_full_text=False
+                            )
+                        raise ValueError(f"Proveedor no soportado: {self.provider}")
                     except Exception as e:
                         error_str = str(e)
                         if es_error_cuota(error_str):
@@ -159,10 +177,13 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
 
                 return (
                     "Error: Fallo en el modelo principal. "
-                    f"Modelo: {self.model_id}. Detalle: {e1}"
+                    f"Proveedor: {self.provider}. Modelo: {self.model_id}. Detalle: {e1}"
                 )
                 
-            contenido = response.choices[0].message.content
+            if self.provider == 'deepseek':
+                contenido = response.choices[0].message.content
+            else:
+                contenido = response
             
             # Debug - guardar contenido raw
             try:
@@ -333,13 +354,18 @@ def main():
     print("GENERADOR DE CONTENIDOS EDUCATIVOS - COLOMBIA DBA")
     print("="*80)
     
-    # Solicitar API key
-    api_key = input("\nIngresa tu API Key de DeepSeek: ").strip()
+    # Solicitar proveedor y API key
+    provider = input("\nProveedor (deepseek/huggingface) [deepseek]: ").strip().lower() or "deepseek"
+    api_key = input("\nIngresa tu API Key: ").strip()
     if not api_key:
         print("Error: API Key requerida")
         return
     
-    generador = GeneradorContenidoEducativo(api_key)
+    model_id = input("\nModelo (deja vacio para default): ").strip()
+    if not model_id:
+        model_id = "deepseek-chat" if provider == "deepseek" else "Qwen/Qwen2.5-1.5B-Instruct"
+
+    generador = GeneradorContenidoEducativo(api_key, model_id=model_id, provider=provider)
     
     # Solicitar tema y grado
     tema = input("\nIngresa el tema educativo: ").strip()

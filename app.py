@@ -376,6 +376,8 @@ if 'api_key_actual' not in st.session_state:
     st.session_state.api_key_actual = ""
 if 'model_id_actual' not in st.session_state:
     st.session_state.model_id_actual = "deepseek-chat"
+if 'provider_actual' not in st.session_state:
+    st.session_state.provider_actual = "deepseek"
 
 # ==================== HERO SECTION ====================
 st.markdown("""
@@ -389,17 +391,35 @@ st.markdown("""
 with st.sidebar:
     st.markdown('<h3 style="margin-top: 2rem;">⚙️ Configuración</h3>', unsafe_allow_html=True)
     
+    provider = st.selectbox(
+        "Proveedor de IA",
+        ["DeepSeek", "Hugging Face"],
+        help="Selecciona el proveedor para generar el contenido",
+        key="provider_select"
+    )
+
+    provider_key = "deepseek" if provider == "DeepSeek" else "huggingface"
+
     # API Key input
     api_key = st.text_input(
-        "API Key de DeepSeek",
+        "API Key de DeepSeek" if provider_key == "deepseek" else "Token de Hugging Face",
         type="password",
-        help="Obtén tu API Key en https://platform.deepseek.com",
+        help=(
+            "Obtén tu API Key en https://platform.deepseek.com"
+            if provider_key == "deepseek"
+            else "Obtén tu token en https://huggingface.co/settings/tokens"
+        ),
         placeholder="Pega tu API Key aquí..."
     )
 
+    if provider_key == "deepseek":
+        model_options = ["deepseek-chat", "deepseek-reasoner"]
+    else:
+        model_options = ["Qwen/Qwen2.5-1.5B-Instruct"]
+
     model_id = st.selectbox(
-        "Modelo DeepSeek",
-        ["deepseek-chat", "deepseek-reasoner"],
+        "Modelo",
+        model_options,
         help="Selecciona el modelo que deseas usar para generar contenido",
         key="model_select"
     )
@@ -409,13 +429,16 @@ with st.sidebar:
             st.session_state.generador is None
             or api_key != st.session_state.api_key_actual
             or model_id != st.session_state.model_id_actual
+            or provider_key != st.session_state.provider_actual
         ):
             st.session_state.generador = GeneradorContenidoEducativo(
                 api_key=api_key,
-                model_id=model_id
+                model_id=model_id,
+                provider=provider_key
             )
             st.session_state.api_key_actual = api_key
             st.session_state.model_id_actual = model_id
+            st.session_state.provider_actual = provider_key
             st.success(f"✅ API Key configurada (modelo: {model_id})")
     
     st.markdown("---")
@@ -494,7 +517,7 @@ with tab1:
     st.markdown('<div style="margin: 2rem 0;">', unsafe_allow_html=True)
     if st.button("🚀 Generar Contenido Educativo", disabled=(not api_key or not tema or not grado), key="generate_btn"):
         if not api_key:
-            st.warning("⚠️ Por favor, ingresa tu API Key de DeepSeek en la barra lateral")
+            st.warning("⚠️ Por favor, ingresa tu API Key en la barra lateral")
         elif not tema or not grado:
             st.warning("⚠️ Por favor, completa todos los campos")
         else:
