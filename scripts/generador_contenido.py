@@ -6,7 +6,7 @@ Desarrollado para crear contenido instruccional estructurado
 import os
 from datetime import datetime
 from typing import Dict
-from google import genai
+import google.genai as genai
 
 
 class GeneradorContenidoEducativo:
@@ -15,6 +15,7 @@ class GeneradorContenidoEducativo:
         if api_key:
             self.client = genai.Client(api_key=api_key)
         self.model_id = 'gemini-1.5-pro'
+
 
         
     def generar_contenido(self, tema: str, grado: str) -> str:
