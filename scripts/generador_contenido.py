@@ -102,11 +102,14 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
         import time
 
         try:
-            # Función auxiliar para intentar generar con retries
+            # Función auxiliar para generar con retries
             def intentar_generar(modelo, intentos=3):
                 for i in range(intentos):
                     try:
-                        print(f"[DEBUG] Intentando con modelo {modelo} (Intento {i+1}/{intentos})...")
+                        msg = f"[DEBUG] Intentando con modelo {modelo} (Intento {i+1}/{intentos})..."
+                        try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
+                        except: pass
+                        
                         return self.client.models.generate_content(
                             model=modelo,
                             contents=prompt
@@ -116,7 +119,9 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                         if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
                             if i < intentos - 1:
                                 wait_time = 10 * (i + 1)
-                                print(f"[DEBUG] Cuota excedida. Esperando {wait_time}s para reintentar...")
+                                msg = f"[DEBUG] Cuota excedida. Esperando {wait_time}s para reintentar..."
+                                try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
+                                except: pass
                                 time.sleep(wait_time)
                                 continue
                         raise e
@@ -125,16 +130,21 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
             try:
                 response = intentar_generar(self.model_id)
             except Exception as e1:
-                print(f"[DEBUG] Falló modelo principal {self.model_id}: {e1}")
+                msg = f"[DEBUG] Fallo modelo principal {self.model_id}: {e1}"
+                try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
+                except: pass
+                
                 # Fallback a gemini-2.0-flash si falla
                 try:
-                    print(f"[DEBUG] Intentando fallback con gemini-2.0-flash...")
+                    msg = f"[DEBUG] Intentando fallback con gemini-2.0-flash..."
+                    try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
+                    except: pass
+                    
                     response = intentar_generar('gemini-2.0-flash')
                 except Exception as e2:
                     return f"Error: Límite de cuota excedido o modelo no disponible. Por favor espera 1 minuto e intenta de nuevo. Detalle: {e2}"
                 
             contenido = response.text
-
             
             # Debug - guardar contenido raw
             try:
@@ -143,11 +153,10 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                     f.write("=== CONTENIDO CRUDO DE GEMINI ===\n\n")
                     f.write(contenido)
                     f.write("\n\n=== FIN CONTENIDO ===")
-                # Print safe for ascii terminals
-                try:
-                    print(f"\n[DEBUG] Contenido crudo guardado".encode('utf-8', errors='ignore').decode('utf-8'))
-                except:
-                    pass
+                
+                msg = f"\n[DEBUG] Contenido crudo guardado"
+                try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
+                except: pass
             except Exception:
                 pass 
             
@@ -179,7 +188,8 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                 start_idx = contenido.index(inicio) + len(inicio)
                 end_idx = contenido.index(fin, start_idx)
                 secciones[seccion] = contenido[start_idx:end_idx].strip()
-                print(f"[DEBUG] ✓ Sección {seccion} encontrada con delimitadores exactos")
+                try: print(f"[DEBUG] Seccion {seccion} encontrada con delimitadores exactos")
+                except: pass
             except ValueError:
                 # Estrategia 2: Buscar con regex más flexible
                 pattern = rf"###\s*SECTION[_\s]*START\s*:\s*{seccion}\s*###(.*?)###\s*SECTION[_\s]*END\s*###"
@@ -187,7 +197,8 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                 
                 if match:
                     secciones[seccion] = match.group(1).strip()
-                    print(f"[DEBUG] ✓ Sección {seccion} encontrada con regex flexible")
+                    try: print(f"[DEBUG] Seccion {seccion} encontrada con regex flexible")
+                    except: pass
                 else:
                     # Estrategia 3: Buscar por palabras clave comunes
                     if seccion == 'THEORIA':
@@ -196,13 +207,16 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                         match = re.search(pattern_theoria, contenido, re.DOTALL | re.IGNORECASE)
                         if match:
                             secciones[seccion] = match.group(1).strip()
-                            print(f"[DEBUG] ⚠ Sección {seccion} recuperada por palabras clave")
+                            try: print(f"[DEBUG] Seccion {seccion} recuperada por palabras clave")
+                            except: pass
                         else:
                             secciones[seccion] = f"Error: Sección {seccion} no encontrada"
-                            print(f"[DEBUG] ✗ Sección {seccion} NO encontrada")
+                            try: print(f"[DEBUG] Seccion {seccion} NO encontrada")
+                            except: pass
                     else:
                         secciones[seccion] = f"Error: Sección {seccion} no encontrada"
-                        print(f"[DEBUG] ✗ Sección {seccion} NO encontrada")
+                        try: print(f"[DEBUG] Seccion {seccion} NO encontrada")
+                        except: pass
         
         # Parsear subsecciones de VISUALIZACION con flexibilidad
         if 'VISUALIZACION' in secciones and not secciones['VISUALIZACION'].startswith('Error'):
