@@ -115,9 +115,13 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                     f.write("=== CONTENIDO CRUDO DE GEMINI ===\n\n")
                     f.write(contenido)
                     f.write("\n\n=== FIN CONTENIDO ===")
-                print(f"\n[DEBUG] Contenido crudo guardado en: {debug_path}")
-            except Exception as e:
-                print(f"[DEBUG] Error guardando debug: {e}")
+                # Print safe for ascii terminals
+                try:
+                    print(f"\n[DEBUG] Contenido crudo guardado".encode('utf-8', errors='ignore').decode('utf-8'))
+                except:
+                    pass
+            except Exception:
+                pass 
             
             return contenido
         except Exception as e:
