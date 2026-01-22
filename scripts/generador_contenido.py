@@ -139,12 +139,13 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                                 ]
                             )
                         if self.provider == 'huggingface':
-                            return self.client.text_generation(
-                                prompt,
-                                max_new_tokens=2048,
-                                do_sample=True,
-                                temperature=0.7,
-                                return_full_text=False
+                            return self.client.chat.completions.create(
+                                model=self.model_id,
+                                messages=[
+                                    {"role": "user", "content": prompt}
+                                ],
+                                max_tokens=2048,
+                                temperature=0.7
                             )
                         raise ValueError(f"Proveedor no soportado: {self.provider}")
                     except Exception as e:
@@ -183,7 +184,7 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
             if self.provider == 'deepseek':
                 contenido = response.choices[0].message.content
             else:
-                contenido = response
+                contenido = response.choices[0].message.content
             
             # Debug - guardar contenido raw
             try:
