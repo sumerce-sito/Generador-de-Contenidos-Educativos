@@ -1,2 +1,7 @@
+<<<<<<< HEAD
 google-generativeai>=0.3.0
 streamlit>=1.30.0
+=======
+google-generativeai>=0.3.0
+streamlit>=1.30.0
+>>>>>>> 24932c8dc575b650947bc865aaf3c48ec7b4901f
