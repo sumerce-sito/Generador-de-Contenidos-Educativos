@@ -1574,4 +1574,3 @@ st.markdown("""
     <p style="font-size: 0.9rem; opacity: 0.8;">Sumercesito | Alineado con DBA Colombia</p>
 </div>
 """, unsafe_allow_html=True)
->>>>>>> 24932c8dc575b650947bc865aaf3c48ec7b4901f
