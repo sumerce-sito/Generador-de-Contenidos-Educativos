@@ -119,7 +119,7 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
     
     def parsear_contenido(self, contenido: str) -> Dict[str, str]:
         """
-        Parsea el contenido generado en secciones
+        Parsea el contenido generado en secciones con estrategia flexible
         
         Args:
             contenido: String con el contenido completo generado
@@ -127,9 +127,10 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
         Returns:
             Dict con las secciones parseadas
         """
+        import re
         secciones = {}
         
-        # Parsear cada sección
+        # Estrategia 1: Intentar con delimitadores exactos
         secciones_nombres = ['THEORIA', 'VISUALIZACION', 'ACTIVIDADES', 'METADATOS']
         
         for seccion in secciones_nombres:
@@ -140,34 +141,74 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                 start_idx = contenido.index(inicio) + len(inicio)
                 end_idx = contenido.index(fin, start_idx)
                 secciones[seccion] = contenido[start_idx:end_idx].strip()
+                print(f"[DEBUG] ✓ Sección {seccion} encontrada con delimitadores exactos")
             except ValueError:
-                secciones[seccion] = f"Error: Sección {seccion} no encontrada"
-                print(f"[DEBUG] No se encontró la sección {seccion}")
-                print(f"[DEBUG] Buscando: '{inicio}'")
-                # Mostrar primeras 500 caracteres del contenido para debug
-                print(f"[DEBUG] Primeros 500 chars:\n{contenido[:500]}")
+                # Estrategia 2: Buscar con regex más flexible
+                pattern = rf"###\s*SECTION[_\s]*START\s*:\s*{seccion}\s*###(.*?)###\s*SECTION[_\s]*END\s*###"
+                match = re.search(pattern, contenido, re.DOTALL | re.IGNORECASE)
+                
+                if match:
+                    secciones[seccion] = match.group(1).strip()
+                    print(f"[DEBUG] ✓ Sección {seccion} encontrada con regex flexible")
+                else:
+                    # Estrategia 3: Buscar por palabras clave comunes
+                    if seccion == 'THEORIA':
+                        # Buscar contenido entre inicio y primera actividad o mermaid
+                        pattern_theoria = r"(?:teoría|theory|contenido teórico)(.*?)(?:###|actividad|mermaid|visualización)"
+                        match = re.search(pattern_theoria, contenido, re.DOTALL | re.IGNORECASE)
+                        if match:
+                            secciones[seccion] = match.group(1).strip()
+                            print(f"[DEBUG] ⚠ Sección {seccion} recuperada por palabras clave")
+                        else:
+                            secciones[seccion] = f"Error: Sección {seccion} no encontrada"
+                            print(f"[DEBUG] ✗ Sección {seccion} NO encontrada")
+                    else:
+                        secciones[seccion] = f"Error: Sección {seccion} no encontrada"
+                        print(f"[DEBUG] ✗ Sección {seccion} NO encontrada")
         
-        # Parsear subsecciones de VISUALIZACION
+        # Parsear subsecciones de VISUALIZACION con flexibilidad
         if 'VISUALIZACION' in secciones and not secciones['VISUALIZACION'].startswith('Error'):
             vis_content = secciones['VISUALIZACION']
             
-            # Extraer código Mermaid
+            # Extraer código Mermaid con regex flexible
             try:
+                # Intentar delimitadores exactos primero
                 mermaid_start = vis_content.index("---CODIGO_MERMAID_START---") + len("---CODIGO_MERMAID_START---")
                 mermaid_end = vis_content.index("---CODIGO_MERMAID_END---")
                 secciones['MERMAID'] = vis_content[mermaid_start:mermaid_end].strip()
             except ValueError:
-                secciones['MERMAID'] = "Error: Código Mermaid no encontrado"
-                print("[DEBUG] No se encontró código Mermaid")
+                # Buscar con regex
+                pattern_mermaid = r"(?:---\s*(?:CODIGO_)?MERMAID[_\s]*START\s*---)(.*?)(?:---\s*(?:CODIGO_)?MERMAID[_\s]*END\s*---)"
+                match = re.search(pattern_mermaid, vis_content, re.DOTALL | re.IGNORECASE)
+                if match:
+                    secciones['MERMAID'] = match.group(1).strip()
+                else:
+                    # Buscar cualquier código que parezca mermaid
+                    pattern_graph = r"(graph\s+(?:TD|LR|TB|RL).*?)(?:---|###|$)"
+                    match = re.search(pattern_graph, vis_content, re.DOTALL | re.IGNORECASE)
+                    if match:
+                        secciones['MERMAID'] = match.group(1).strip()
+                    else:
+                        secciones['MERMAID'] = "Error: Código Mermaid no encontrado"
             
-            # Extraer prompt DALL-E
+            # Extraer prompt DALL-E con regex flexible
             try:
                 dalle_start = vis_content.index("---PROMPT_DALLE_START---") + len("---PROMPT_DALLE_START---")
                 dalle_end = vis_content.index("---PROMPT_DALLE_END---")
                 secciones['DALLE_PROMPT'] = vis_content[dalle_start:dalle_end].strip()
             except ValueError:
-                secciones['DALLE_PROMPT'] = "Error: Prompt DALL-E no encontrado"
-                print("[DEBUG] No se encontró prompt DALL-E")
+                pattern_dalle = r"(?:---\s*(?:PROMPT_)?DALLE[_\s]*START\s*---)(.*?)(?:---\s*(?:PROMPT_)?DALLE[_\s]*END\s*---)"
+                match = re.search(pattern_dalle, vis_content, re.DOTALL | re.IGNORECASE)
+                if match:
+                    secciones['DALLE_PROMPT'] = match.group(1).strip()
+                else:
+                    # Buscar cualquier prompt en inglés después de mermaid
+                    pattern_eng = r"(?:prompt|dall-e|image)[\s:]*([A-Z][^#]*?(?:illustration|background|style|quality)[^#]*)"
+                    match = re.search(pattern_eng, vis_content, re.IGNORECASE)
+                    if match:
+                        secciones['DALLE_PROMPT'] = match.group(1).strip()
+                    else:
+                        secciones['DALLE_PROMPT'] = "Error: Prompt DALL-E no encontrado"
         
         return secciones
     
