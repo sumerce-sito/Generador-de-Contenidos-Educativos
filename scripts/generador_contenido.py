@@ -6,15 +6,16 @@ Desarrollado para crear contenido instruccional estructurado
 import os
 from datetime import datetime
 from typing import Dict
-import google.generativeai as genai
+from google import genai
 
 
 class GeneradorContenidoEducativo:
     def __init__(self, api_key: str = None):
         """Inicializa el generador con la API de Gemini"""
         if api_key:
-            genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+            self.client = genai.Client(api_key=api_key)
+        self.model_id = 'gemini-1.5-pro'
+
         
     def generar_contenido(self, tema: str, grado: str) -> str:
         """
@@ -99,8 +100,12 @@ Educational illustration showing {tema} in Colombian context. Include specific C
 CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (sin introducción como "Aquí está...")"""
 
         try:
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model=self.model_id,
+                contents=prompt
+            )
             contenido = response.text
+
             
             # Debug - guardar contenido raw
             try:
