@@ -6,15 +6,20 @@ Desarrollado para crear contenido instruccional estructurado
 import os
 from datetime import datetime
 from typing import Dict
-import google.genai as genai
+from openai import OpenAI
 
 
 class GeneradorContenidoEducativo:
-    def __init__(self, api_key: str = None):
-        """Inicializa el generador con la API de Gemini"""
+    def __init__(
+        self,
+        api_key: str = None,
+        model_id: str = 'deepseek-chat',
+        base_url: str = 'https://api.deepseek.com'
+    ):
+        """Inicializa el generador con la API de DeepSeek"""
         if api_key:
-            self.client = genai.Client(api_key=api_key)
-        self.model_id = 'gemini-1.5-flash'
+            self.client = OpenAI(api_key=api_key, base_url=base_url)
+        self.model_id = model_id
 
         
     def generar_contenido(self, tema: str, grado: str) -> str:
@@ -101,6 +106,14 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
 
         import time
 
+        def es_error_cuota(error_str: str) -> bool:
+            lowered = error_str.lower()
+            return (
+                "resource_exhausted" in error_str
+                or "quota" in lowered
+                or "429" in error_str
+            )
+
         try:
             # Función auxiliar para generar con retries
             def intentar_generar(modelo, intentos=3):
@@ -110,12 +123,16 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                         try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
                         except: pass
                         
-                        return self.client.models.generate_content(
+                        return self.client.chat.completions.create(
                             model=modelo,
-                            contents=prompt
+                            messages=[
+                                {"role": "user", "content": prompt}
+                            ]
                         )
                     except Exception as e:
                         error_str = str(e)
+                        if es_error_cuota(error_str):
+                            raise e
                         if "429" in error_str or "RESOURCE_EXHAUSTED" in error_str:
                             if i < intentos - 1:
                                 wait_time = 10 * (i + 1)
@@ -133,18 +150,19 @@ CRÍTICO: Empieza tu respuesta directamente con ###SECTION_START: THEORIA### (si
                 msg = f"[DEBUG] Fallo modelo principal {self.model_id}: {e1}"
                 try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
                 except: pass
+
+                if es_error_cuota(str(e1)):
+                    return (
+                        "Error: Cuota excedida para el modelo principal. "
+                        f"Modelo: {self.model_id}. Detalle: {e1}"
+                    )
+
+                return (
+                    "Error: Fallo en el modelo principal. "
+                    f"Modelo: {self.model_id}. Detalle: {e1}"
+                )
                 
-                # Fallback a gemini-2.0-flash si falla
-                try:
-                    msg = f"[DEBUG] Intentando fallback con gemini-2.0-flash..."
-                    try: print(msg.encode('utf-8', errors='ignore').decode('utf-8'))
-                    except: pass
-                    
-                    response = intentar_generar('gemini-2.0-flash')
-                except Exception as e2:
-                    return f"Error: Límite de cuota excedido o modelo no disponible. Por favor espera 1 minuto e intenta de nuevo. Detalle: {e2}"
-                
-            contenido = response.text
+            contenido = response.choices[0].message.content
             
             # Debug - guardar contenido raw
             try:
@@ -316,7 +334,7 @@ def main():
     print("="*80)
     
     # Solicitar API key
-    api_key = input("\nIngresa tu API Key de Google Gemini: ").strip()
+    api_key = input("\nIngresa tu API Key de DeepSeek: ").strip()
     if not api_key:
         print("Error: API Key requerida")
         return

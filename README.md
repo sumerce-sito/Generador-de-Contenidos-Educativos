@@ -17,7 +17,7 @@ Sistema de diseño instruccional automatizado para crear contenido educativo de 
 
 ### Requisitos
 - Python 3.8+
-- API Key de Google Gemini ([obtener aquí](https://makersuite.google.com/app/apikey))
+- API Key de DeepSeek ([obtener aquí](https://platform.deepseek.com))
 
 ### Pasos
 
@@ -44,7 +44,7 @@ La aplicación se abrirá en `http://localhost:8501`
 ### Interfaz Web (Recomendado)
 
 1. **Configurar API Key**
-   - Ingresa tu API Key de Google Gemini en la barra lateral
+   - Ingresa tu API Key de DeepSeek en la barra lateral
 
 2. **Ingresar Datos**
    - **Tema**: Escribe el tema educativo (ej: "El ciclo del agua")
@@ -144,7 +144,7 @@ Generador-de-Contenidos-Educativos/
 ## 🔧 Tecnologías
 
 - **Backend**: Python 3.8+
-- **IA**: Google Gemini 1.5 Pro
+- **IA**: DeepSeek (deepseek-chat)
 - **Interfaz**: Streamlit
 - **Visualización**: Mermaid.js
 - **Tipografía**: Montserrat (Google Fonts)
@@ -172,7 +172,7 @@ Desarrollado con ❤️ para la educación colombiana 🇨🇴
 ## 🙏 Agradecimientos
 
 - Ministerio de Educación de Colombia por los DBA
-- Google Gemini por la API de IA
+- DeepSeek por la API de IA
 - Comunidad educativa colombiana
 
 ---

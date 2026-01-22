@@ -372,6 +372,10 @@ if 'tema_actual' not in st.session_state:
     st.session_state.tema_actual = ""
 if 'grado_actual' not in st.session_state:
     st.session_state.grado_actual = ""
+if 'api_key_actual' not in st.session_state:
+    st.session_state.api_key_actual = ""
+if 'model_id_actual' not in st.session_state:
+    st.session_state.model_id_actual = "deepseek-chat"
 
 # ==================== HERO SECTION ====================
 st.markdown("""
@@ -387,16 +391,32 @@ with st.sidebar:
     
     # API Key input
     api_key = st.text_input(
-        "API Key de Google Gemini",
+        "API Key de DeepSeek",
         type="password",
-        help="Obtén tu API Key en https://makersuite.google.com",
+        help="Obtén tu API Key en https://platform.deepseek.com",
         placeholder="Pega tu API Key aquí..."
+    )
+
+    model_id = st.selectbox(
+        "Modelo DeepSeek",
+        ["deepseek-chat", "deepseek-reasoner"],
+        help="Selecciona el modelo que deseas usar para generar contenido",
+        key="model_select"
     )
     
     if api_key:
-        if st.session_state.generador is None:
-            st.session_state.generador = GeneradorContenidoEducativo(api_key=api_key)
-            st.success("✅ API Key configurada")
+        if (
+            st.session_state.generador is None
+            or api_key != st.session_state.api_key_actual
+            or model_id != st.session_state.model_id_actual
+        ):
+            st.session_state.generador = GeneradorContenidoEducativo(
+                api_key=api_key,
+                model_id=model_id
+            )
+            st.session_state.api_key_actual = api_key
+            st.session_state.model_id_actual = model_id
+            st.success(f"✅ API Key configurada (modelo: {model_id})")
     
     st.markdown("---")
     
@@ -474,7 +494,7 @@ with tab1:
     st.markdown('<div style="margin: 2rem 0;">', unsafe_allow_html=True)
     if st.button("🚀 Generar Contenido Educativo", disabled=(not api_key or not tema or not grado), key="generate_btn"):
         if not api_key:
-            st.warning("⚠️ Por favor, ingresa tu API Key de Google Gemini en la barra lateral")
+            st.warning("⚠️ Por favor, ingresa tu API Key de DeepSeek en la barra lateral")
         elif not tema or not grado:
             st.warning("⚠️ Por favor, completa todos los campos")
         else:
@@ -758,7 +778,7 @@ with tab3:
     ### 📘 Cómo Usar el Generador
     
     #### 1️⃣ Configurar API Key
-    - Ve a [Google AI Studio](https://makersuite.google.com/app/apikey)
+    - Ve a [DeepSeek Platform](https://platform.deepseek.com)
     - Crea o inicia sesión con tu cuenta de Google
     - Genera una nueva API Key
     - Pégala en el campo de la barra lateral

@@ -8,9 +8,9 @@ cd "d:\APP COLEGIOS 2026"
 pip install -r requirements.txt
 ```
 
-## Paso 2: Obtener API Key de Google Gemini
+## Paso 2: Obtener API Key de DeepSeek
 
-1. Ve a: https://makersuite.google.com/app/apikey
+1. Ve a: https://platform.deepseek.com
 2. Crea o inicia sesión con tu cuenta de Google
 3. Haz clic en "Create API Key"
 4. Copia tu API Key (guárdala en un lugar seguro)
@@ -25,7 +25,7 @@ python generador_contenido.py
 ```
 
 El programa te preguntará:
-1. Tu API Key de Gemini
+1. Tu API Key de DeepSeek
 2. El tema educativo (ej: "El ciclo del agua")
 3. El grado (ej: "4°")
 
@@ -119,7 +119,7 @@ output/
 
 1. **API Key**: Nunca compartas tu API Key. El archivo `.gitignore` ya está configurado para protegerla.
 
-2. **Límites de la API**: Google Gemini tiene límites de uso gratuito. Revisa tu cuota en: https://makersuite.google.com
+2. **Límites de la API**: DeepSeek tiene límites de uso gratuito. Revisa tu cuota en: https://platform.deepseek.com
 
 3. **Internet**: Necesitas conexión a internet para generar contenido.
 
@@ -129,7 +129,7 @@ output/
 
 ### Error: "API Key inválida"
 - Verifica que copiaste la API Key completa
-- Asegúrate de que la API Key esté activa en Google AI Studio
+- Asegúrate de que la API Key esté activa en DeepSeek Platform
 
 ### Error: "Module not found"
 - Ejecuta: `pip install -r requirements.txt`
@@ -158,9 +158,9 @@ cd "d:\APP COLEGIOS 2026"
 pip install -r requirements.txt
 ```
 
-## Paso 2: Obtener API Key de Google Gemini
+## Paso 2: Obtener API Key de DeepSeek
 
-1. Ve a: https://makersuite.google.com/app/apikey
+1. Ve a: https://platform.deepseek.com
 2. Crea o inicia sesión con tu cuenta de Google
 3. Haz clic en "Create API Key"
 4. Copia tu API Key (guárdala en un lugar seguro)
@@ -175,7 +175,7 @@ python generador_contenido.py
 ```
 
 El programa te preguntará:
-1. Tu API Key de Gemini
+1. Tu API Key de DeepSeek
 2. El tema educativo (ej: "El ciclo del agua")
 3. El grado (ej: "4°")
 
@@ -269,7 +269,7 @@ output/
 
 1. **API Key**: Nunca compartas tu API Key. El archivo `.gitignore` ya está configurado para protegerla.
 
-2. **Límites de la API**: Google Gemini tiene límites de uso gratuito. Revisa tu cuota en: https://makersuite.google.com
+2. **Límites de la API**: DeepSeek tiene límites de uso gratuito. Revisa tu cuota en: https://platform.deepseek.com
 
 3. **Internet**: Necesitas conexión a internet para generar contenido.
 
@@ -279,7 +279,7 @@ output/
 
 ### Error: "API Key inválida"
 - Verifica que copiaste la API Key completa
-- Asegúrate de que la API Key esté activa en Google AI Studio
+- Asegúrate de que la API Key esté activa en DeepSeek Platform
 
 ### Error: "Module not found"
 - Ejecuta: `pip install -r requirements.txt`
